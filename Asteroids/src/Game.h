@@ -3,6 +3,7 @@
 
 #include <map>
 #include "Player.h"
+#include "Enemy.h"
 #include "Bullet.h"
 
 class Game {
@@ -13,6 +14,11 @@ private:
 	//Player
 	Player* player;
 
+	//Enemies
+	float spawnTimer;
+	float spawnTimerMax;
+	std::vector<Enemy*> enemies;
+
 	//Resources
 	std::map<std::string, sf::Texture*> textures;
 	std::vector<Bullet*> bullets;
@@ -21,6 +27,7 @@ private:
 	void initWindow();
 	void initTextures();
 	void initPlayer();
+	void initEnemies();
 public:
 	Game();
 
@@ -32,6 +39,8 @@ public:
 	void updateInput();
 
 	void updateBullets();
+
+	void updateEnemies();
 
 	void update();
 

@@ -16,7 +16,7 @@ public:
 	//Constructors
 	Bullet() = default;
 
-	Bullet(sf::Texture* texture,float posX,float poxY, float dirX, float dirY, float movementSpeed);
+	Bullet(sf::Texture* texture,float posX,float posY, float dirX, float dirY, float movementSpeed);
 
 	const sf::FloatRect getBounds() const;
 

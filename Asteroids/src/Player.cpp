@@ -1,5 +1,12 @@
 #include "Player.h"
 
+void Player::initVariables()
+{
+	this->movementSpeed = 4.f;
+	this->attackCooldownMax = 10.f;
+	this->attackCooldown = this->attackCooldownMax;
+}
+
 void Player::initTexture()
 {
    // Load a texture from file.
@@ -18,8 +25,7 @@ void Player::initSprite()
 //Constructor
 Player::Player()
 {
-	this->movementSpeed = 3.f;
-
+	this->initVariables();
 	this->initTexture();
 	this->initSprite();
 }
@@ -29,15 +35,37 @@ const sf::Vector2f& Player::getPos() const
 	return this->sprite.getPosition();
 }
 
+const sf::FloatRect Player::getBounds() const
+{
+	return this->sprite.getGlobalBounds();
+}
+
 //Functions
 void Player::move(const float dirX, const float dirY)
 {
 	this->sprite.move(this->movementSpeed * dirX, this->movementSpeed * dirY);
 }
 
+const bool Player::canAttack()
+{
+	if(this->attackCooldown >= this->attackCooldownMax)
+	{
+		this->attackCooldown = 0.f;
+		return true;
+	}
+
+	return false;
+}
+
 void Player::update()
 {
+	this->updateAttack();
+}
 
+void Player::updateAttack()
+{
+	if(this->attackCooldownMax > this->attackCooldown)
+	    this->attackCooldown += 0.5f;
 }
 
 void Player::render(sf::RenderTarget& target)
