@@ -30,6 +30,7 @@ Player::Player()
 	this->initSprite();
 }
 
+//Accessors
 const sf::Vector2f& Player::getPos() const
 {
 	return this->sprite.getPosition();
@@ -38,6 +39,12 @@ const sf::Vector2f& Player::getPos() const
 const sf::FloatRect Player::getBounds() const
 {
 	return this->sprite.getGlobalBounds();
+}
+
+//Modifiers
+void Player::setPos(const sf::Vector2f pos)
+{
+	this->sprite.setPosition(pos.x,pos.y);
 }
 
 //Functions

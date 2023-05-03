@@ -19,6 +19,14 @@ private:
 	float spawnTimerMax;
 	std::vector<Enemy*> enemies;
 
+	//GUI
+	sf::Font font;
+	sf::Text pointText;
+
+	//World
+	sf::Sprite worldBackground;
+	sf::Texture worldBackgroundTex;
+
 	//Resources
 	std::map<std::string, sf::Texture*> textures;
 	std::vector<Bullet*> bullets;
@@ -26,6 +34,8 @@ private:
 	//Private Functions
 	void initWindow();
 	void initTextures();
+	void initGUI();
+	void initWorld();
 	void initPlayer();
 	void initEnemies();
 public:
@@ -38,11 +48,23 @@ public:
 
 	void updateInput();
 
+	void updateGUI();
+
+	void updateWorld();
+
+	void updateCollision();
+
 	void updateBullets();
 
 	void updateEnemies();
 
+	void updateCombat();
+
 	void update();
+
+	void renderGUI();
+
+	void renderWorld();
 
 	void render();
 

@@ -26,6 +26,9 @@ public:
 
 	const sf::FloatRect getBounds() const;
 
+	//Modifiers
+	void setPos(const sf::Vector2f pos);
+
 	//Function
 	void move(const float dirX, const float dirY);
 
