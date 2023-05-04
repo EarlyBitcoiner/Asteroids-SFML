@@ -1,6 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <iostream>
+#include <sstream>
 #include <map>
 #include "Player.h"
 #include "Enemy.h"
@@ -10,9 +12,18 @@ class Game {
 private:
 	//Window
 	sf::RenderWindow* window;
+
+	//Systems
+	unsigned points;
 	
 	//Player
 	Player* player;
+
+	//Player GUI
+	sf::RectangleShape playerHpBar;
+	sf::RectangleShape playerHpBarBack;
+
+	sf::Text gameOverText;
 
 	//Enemies
 	float spawnTimer;

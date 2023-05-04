@@ -22,10 +22,26 @@ void Game::initGUI()
 	this->font.loadFromFile("C:/Users/user/source/repos/Asteroids/Asteroids/src/Fonts/BrunoAce-Regular.ttf");
 
 	//Init point text
+	//this->pointText.setPosition(700.f,25.f );
 	this->pointText.setFont(this->font);
-	this->pointText.setCharacterSize(12);
+	this->pointText.setCharacterSize(20);
 	this->pointText.setFillColor(sf::Color::White);
-	this->pointText.setString("test");
+	this->pointText.setString("points: ");
+
+	this->gameOverText.setFont(this->font);
+	this->gameOverText.setCharacterSize(60);
+	this->gameOverText.setFillColor(sf::Color::Red);
+	this->gameOverText.setString("Game Over!");
+	this->gameOverText.setPosition(this->window->getSize().x / 2.f - this->gameOverText.getGlobalBounds().width / 2.f,
+		                           this->window->getSize().y / 2.f - this->gameOverText.getGlobalBounds().height / 2.f);
+
+	//Init player GUI
+	this->playerHpBar.setSize(sf::Vector2f(300.f, 20.f));
+	this->playerHpBar.setFillColor(sf::Color::Red);
+	this->playerHpBar.setPosition(sf::Vector2f(20.f, 20.f));
+
+	this->playerHpBarBack = this->playerHpBar;
+	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 200));
 
 }
 
@@ -37,7 +53,7 @@ void Game::initWorld()
 
 void Game::initPlayer()
 {
-	this->player = new Player();
+	this->player = new Player(*this->window);
 }
 
 void Game::initEnemies()
@@ -63,7 +79,13 @@ void Game::run()
 
 	while(this->window->isOpen())
 	{
-		this->update();
+		this->updatePollEvents();
+
+		if(this->player->getHp() > 0)
+		{
+			this->update();
+		}
+
 		this->render();
 	}
 
@@ -107,7 +129,14 @@ void Game::updateInput()
 
 void Game::updateGUI()
 {
+	//Update points text
+	std::stringstream str;
+	str << "Points: " << this->points;
+	this->pointText.setString(str.str());
 
+	//Update HP bar
+	float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
+	this->playerHpBar.setSize(sf::Vector2f(300.f * hpPercent,this->playerHpBar.getSize().y));
 }
 
 void Game::updateWorld()
@@ -117,16 +146,26 @@ void Game::updateWorld()
 
 void Game::updateCollision()
 {
-	//Left screen side
+	//Left screen side with player
 	if(this->player->getBounds().left < 0.f)
 	{
 		this->player->setPos(sf::Vector2f(0.f, this->player->getBounds().top));
 	}
-	//Right screen side
-	/*if (this->player->getBounds().width < 0.f)
+	//Top screen side with player
+	if (this->player->getBounds().top < 0.f)
 	{
-		this->player->setPos(sf::Vector2f(0.f, this->player->getBounds().top));
-	}*/
+		this->player->setPos(sf::Vector2f(this->player->getBounds().left, 0.f));
+	}
+	//Right screen side with player
+	if (this->player->getBounds().width + this->player->getPos().x > this->window->getSize().x)
+	{
+		this->player->setPos(sf::Vector2f(this->window->getSize().x - this->player->getBounds().width,this->player->getPos().y));
+	}
+	//Bottom screen side with player
+	if (this->player->getBounds().height + this->player->getPos().y > this->window->getSize().y)
+	{
+		this->player->setPos(sf::Vector2f(this->player->getPos().x, this->window->getSize().y - this->player->getBounds().height));
+	}
 }
 
 void Game::updateBullets()
@@ -165,10 +204,18 @@ void Game::updateEnemies()
 	{
 		enemy->update();
 
-		//Check if enemy off screen
+		//Check if Bullets colliding with the top of screen
 		if (enemy->getBounds().top > this->window->getSize().y)
 		{
 			//Delete enemy
+			delete this->enemies.at(counter);
+			this->enemies.erase(this->enemies.begin() + counter);
+			--counter;
+		}
+		//check if enemy colliding with the player
+		else if (enemy->getBounds().intersects(this->player->getBounds()))
+		{
+			this->player->loseHp(this->enemies.at(counter)->getDamage());
 			delete this->enemies.at(counter);
 			this->enemies.erase(this->enemies.begin() + counter);
 			--counter;
@@ -180,16 +227,17 @@ void Game::updateEnemies()
 
 void Game::updateCombat()
 {
-	//Colicion check
+	//Collision check
 	for (int i = 0; i < this->enemies.size(); ++i)
 	{
 		bool enemyRemoved = false;
-		//this->enemies[i]->update();
 
 		for (int n = 0; n < this->bullets.size() && !enemyRemoved; n++)
 		{
 			if (this->bullets[n]->getBounds().intersects(this->enemies[i]->getBounds()))
 			{
+				this->points += this->enemies[i]->getPoints();
+
 				delete this->bullets[n];
 				delete this->enemies[i];
 
@@ -204,7 +252,6 @@ void Game::updateCombat()
 
 void Game::update()
 {
-	this->updatePollEvents();
 	this->updateWorld();
 	this->updateBullets();
 	this->updateInput();
@@ -218,6 +265,8 @@ void Game::update()
 void Game::renderGUI()
 {
 	this->window->draw(this->pointText);
+	this->window->draw(this->playerHpBarBack);
+	this->window->draw(this->playerHpBar);
 }
 
 void Game::renderWorld()
@@ -246,6 +295,10 @@ void Game::render()
 	}
 
 	this->renderGUI();
+
+	//Game over
+	if (this->player->getHp() <= 0)
+		this->window->draw(this->gameOverText);
 
 	//Display frame
 	this->window->display();

@@ -4,7 +4,8 @@
 #include <SFML/System.hpp>
 #include <stdexcept>
 
-class Player {
+class Player 
+{
 private:
 	sf::Sprite sprite;
 	sf::Texture texture;
@@ -14,20 +15,30 @@ private:
 	float attackCooldown;
 	float attackCooldownMax;
 
+	int hp;
+	int hpMax;
+
 	//Private Functions
 	void initVariables();
 	void initTexture();
-	void initSprite();
+	void initSprite(sf::RenderTarget& target);
 public:
-	Player();
+	Player(sf::RenderTarget& target);
 
 	//Accessor
 	const sf::Vector2f& getPos() const;
 
 	const sf::FloatRect getBounds() const;
 
+	const int& getHp() const;
+	const int& getHpMax() const;
+
 	//Modifiers
 	void setPos(const sf::Vector2f pos);
+
+	void setHp(const int hp);
+
+	void loseHp(const int hp);
 
 	//Function
 	void move(const float dirX, const float dirY);

@@ -8,6 +8,8 @@
 class Enemy
 {
 private:
+	unsigned pointCount;
+
 	sf::CircleShape shape;
 
 	float speed;
@@ -26,6 +28,10 @@ public:
 
 	//Accessors
 	const sf::FloatRect getBounds() const;
+
+	const int& getPoints() const;
+
+	const int& getDamage() const;
 
 	//Functions
 	void update();

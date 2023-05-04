@@ -4,33 +4,44 @@
 //Private Functions
 void Enemy::initVariables()
 {
-	this->speed = 2.5f;
+	this->pointCount = rand() % 8 + 3; // min = 3 max = 10
+	this->speed = this->pointCount / 3;
 	this->type = 0;
-	this->hp = 0;
-	this->hpMax = 10;
-	this->damage = 1;
-	this->points = 5;
+	this->hpMax = this->pointCount;
+	this->hp = this->hpMax;
+	this->damage = this->pointCount;
+	this->points = this->pointCount;
 }
 
 void Enemy::initShape()
 {
-	this->shape.setRadius(rand() % 20 + 20);
-	this->shape.setPointCount(rand() % 10 + 3);
+	this->shape.setRadius(this->pointCount * 10);
+	this->shape.setPointCount(this->pointCount);
 	this->shape.setFillColor(sf::Color(rand() % 254 + 1, rand() % 254 + 1, 255));
 }
 
 //Constructor
 Enemy::Enemy(float posX, float posY)
 {
+	this->initVariables();
 	this->initShape();
 	this->shape.setPosition(posX,posY);
-	this->initVariables();
 }
 
 //Accessors
 const sf::FloatRect Enemy::getBounds() const
 {
 	return this->shape.getGlobalBounds();
+}
+
+const int& Enemy::getPoints() const
+{
+	return this->points;
+}
+
+const int& Enemy::getDamage() const
+{
+	return this->damage;
 }
 
 //Functions
