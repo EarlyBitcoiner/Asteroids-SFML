@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Bullet.h"
+#include "Explosion.h"
 
 class Game {
 private:
@@ -29,6 +30,9 @@ private:
 	float spawnTimer;
 	float spawnTimerMax;
 	std::vector<Enemy*> enemies;
+
+	//Explosions
+	std::vector<Explosion*> explosions;
 
 	//GUI
 	sf::Font font;
@@ -70,6 +74,8 @@ public:
 	void updateEnemies();
 
 	void updateCombat();
+
+	void updateExplosions();
 
 	void update();
 

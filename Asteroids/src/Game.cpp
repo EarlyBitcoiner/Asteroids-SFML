@@ -14,6 +14,12 @@ void Game::initTextures()
 {
 	this->textures["BULLET"] = new sf::Texture();
 	this->textures["BULLET"]->loadFromFile("C:/Users/user/source/repos/Asteroids/Asteroids/src/Textures/bullet.png");
+
+	this->textures["BOOM1"] = new sf::Texture();
+	this->textures["BOOM1"]->loadFromFile("C:/Users/user/source/repos/Asteroids/Asteroids/src/Textures/boom1.png");
+
+	this->textures["CRASH1"] = new sf::Texture();
+	this->textures["CRASH1"]->loadFromFile("C:/Users/user/source/repos/Asteroids/Asteroids/src/Textures/crash1.png");
 }
 
 void Game::initGUI()
@@ -38,7 +44,7 @@ void Game::initGUI()
 	//Init player GUI
 	this->playerHpBar.setSize(sf::Vector2f(300.f, 20.f));
 	this->playerHpBar.setFillColor(sf::Color::Red);
-	this->playerHpBar.setPosition(sf::Vector2f(20.f, 20.f));
+	this->playerHpBar.setPosition(sf::Vector2f(20.f, 30.f));
 
 	this->playerHpBarBack = this->playerHpBar;
 	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 200));
@@ -118,12 +124,13 @@ void Game::updateInput()
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->player->canAttack())
 	{
-		this->bullets.push_back(new Bullet(this->textures["BULLET"],
-			this->player->getPos().x + this->player->getBounds().width/2.f,
-			this->player->getPos().y - this->player->getBounds().height/2.f,
-			0.f,
-			-1.f,
-			5.f));
+		this->bullets.push_back(new Bullet(this->textures["BULLET"], // texture
+			this->player->getPos().x + this->player->getBounds().width/2.f, // spawn position X
+			this->player->getPos().y - this->player->getBounds().height/2.f, // spawn position Y
+			0.f,   // travel direction X by
+			-1.f, // travel direction Y by
+			5.f, // travel speed
+			3.f)); // damage
 	}
 }
 
@@ -194,7 +201,12 @@ void Game::updateEnemies()
 	this->spawnTimer += 0.5f;
 	if (this->spawnTimer >= this->spawnTimerMax)
 	{
-		this->enemies.push_back(new Enemy(rand() % this->window->getSize().x - 40.f, -200.f));
+		float spawnXpos = rand() % this->window->getSize().x;
+
+		if (spawnXpos >= this->window->getSize().x - 100.f)
+			spawnXpos -= 300.f;
+
+		this->enemies.push_back(new Enemy(spawnXpos, -200.f));
 		this->spawnTimer = 0.f;
 	}
   
@@ -204,9 +216,12 @@ void Game::updateEnemies()
 	{
 		enemy->update();
 
-		//Check if Bullets colliding with the top of screen
+		//Check if Enemies colliding with the bottom of screen
 		if (enemy->getBounds().top > this->window->getSize().y)
 		{
+			//Lose Hp
+			this->player->loseHp(4.f);
+
 			//Delete enemy
 			delete this->enemies.at(counter);
 			this->enemies.erase(this->enemies.begin() + counter);
@@ -215,9 +230,13 @@ void Game::updateEnemies()
 		//check if enemy colliding with the player
 		else if (enemy->getBounds().intersects(this->player->getBounds()))
 		{
+			this->explosions.push_back(new Explosion(*this->textures["CRASH1"], enemy->getPos()));
+
 			this->player->loseHp(this->enemies.at(counter)->getDamage());
+
 			delete this->enemies.at(counter);
 			this->enemies.erase(this->enemies.begin() + counter);
+
 			--counter;
 		}
 
@@ -227,7 +246,7 @@ void Game::updateEnemies()
 
 void Game::updateCombat()
 {
-	//Collision check
+
 	for (int i = 0; i < this->enemies.size(); ++i)
 	{
 		bool enemyRemoved = false;
@@ -236,18 +255,41 @@ void Game::updateCombat()
 		{
 			if (this->bullets[n]->getBounds().intersects(this->enemies[i]->getBounds()))
 			{
-				this->points += this->enemies[i]->getPoints();
+				this->enemies[i]->loseHp(this->bullets[n]->getDamage());
 
 				delete this->bullets[n];
-				delete this->enemies[i];
-
 				this->bullets.erase(this->bullets.begin() + n);
-				this->enemies.erase(this->enemies.begin() + i);
-				enemyRemoved = true;
+
+				if (this->enemies[i]->getHp() == 0)
+				{
+					this->explosions.push_back(new Explosion(*this->textures["BOOM1"], this->enemies[i]->getPos()));
+
+					this->points += this->enemies[i]->getPoints();
+
+					delete this->enemies[i];
+					this->enemies.erase(this->enemies.begin() + i);
+
+					enemyRemoved = true;
+				}
 			}
 		}
 	}
 
+}
+
+void Game::updateExplosions()
+{
+	for(int i = 0;i < this->explosions.size();++i)
+	{
+		explosions[i]->update();
+
+		if (explosions[i]->getLifeTimeOver())
+		{
+			delete explosions[i];
+			explosions.erase(explosions.begin() + i);
+			--i;
+		}
+	}
 }
 
 void Game::update()
@@ -259,6 +301,7 @@ void Game::update()
 	this->updateCollision();
 	this->updateEnemies();
 	this->updateCombat();
+	this->updateExplosions();
 	this->updateGUI();
 }
 
@@ -281,6 +324,11 @@ void Game::render()
 
 	//Draw stuff
 	this->renderWorld();
+
+	for (auto* explosion : this->explosions)
+	{
+		explosion->render(this->window);
+	}
 
 	this->player->render(*this->window);
 

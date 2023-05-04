@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -39,7 +40,7 @@ public:
 	void setHp(const int hp);
 
 	void loseHp(const int hp);
-
+		
 	//Function
 	void move(const float dirX, const float dirY);
 
@@ -54,3 +55,5 @@ public:
 	//Destructor
 	virtual ~Player();
 };
+
+#endif PLAYER_H

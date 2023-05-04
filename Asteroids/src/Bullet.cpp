@@ -1,7 +1,7 @@
 #include "Bullet.h"
 
 //Constructor
-Bullet::Bullet(sf::Texture* texture,float posX,float posY, float dirX, float dirY, float movementSpeed)
+Bullet::Bullet(sf::Texture* texture,float posX,float posY, float dirX, float dirY, float movementSpeed, float damage)
 {
 	this->shape.setTexture(*texture);
 
@@ -9,11 +9,17 @@ Bullet::Bullet(sf::Texture* texture,float posX,float posY, float dirX, float dir
 	this->direction.x = dirX;
 	this->direction.y = dirY;
 	this->movementSpeed = movementSpeed;
+	this->damage = damage;
 }
 
 const sf::FloatRect Bullet::getBounds() const
 {
 	return this->shape.getGlobalBounds();
+}
+
+const float Bullet::getDamage() const
+{
+	return this->damage;
 }
 
 //Functions

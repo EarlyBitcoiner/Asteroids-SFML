@@ -26,12 +26,22 @@ public:
 	//Constructor
 	Enemy(float posX, float posY);
 
+	//Modifiers
+
+	void setHp(int hp);
+
+	void loseHp(int hp);
+
 	//Accessors
 	const sf::FloatRect getBounds() const;
+
+	const sf::Vector2f getPos() const;
 
 	const int& getPoints() const;
 
 	const int& getDamage() const;
+
+	const int& getHp() const;
 
 	//Functions
 	void update();
