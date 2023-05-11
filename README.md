@@ -1,4 +1,4 @@
-Hello! This is game about a spaceship destroying asteroids on his way to new planets! The game is coded intirely on C++ with the help of the SFML(Super Fast Media Library) library. If you are wanting to understand the code you should read a little about SFML and get to know the basic things one is capable of doing with this library. Best way to do this is rading the tutorials from their site https://www.sfml-dev.org/tutorials/2.5/ they are very simple and well explained. Other way is watching videos but my opinion is that reading from the site will be faster.
+ Hello! This is game about a spaceship destroying asteroids on his way to new planets! The game is coded intirely on C++ with the help of the SFML(Super Fast Media Library) library. If you are wanting to understand the code you should read a little about SFML and get to know the basic things one is capable of doing with this library. Best way to do this is rading the tutorials from their site https://www.sfml-dev.org/tutorials/2.5/ they are very simple and well explained. Other way is watching videos but my opinion is that reading from the site will be faster.
 
 Gameplay photos:
 
