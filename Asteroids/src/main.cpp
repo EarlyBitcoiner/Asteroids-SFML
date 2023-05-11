@@ -5,6 +5,7 @@
 
 int main()
 {
+    system("cd");
     //srand(time(static_cast<unsigned>(0)));
 
     Game game;

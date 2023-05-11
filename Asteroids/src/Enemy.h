@@ -10,7 +10,8 @@ class Enemy
 private:
 	unsigned pointCount;
 
-	sf::CircleShape shape;
+	sf::Sprite sprite;
+	sf::Texture texture;
 
 	float speed;
 	int type;
@@ -21,7 +22,7 @@ private:
 
 	//Private Functions
 	void initVariables();
-	void initShape();
+	void initSprite();
 public:
 	//Constructor
 	Enemy(float posX, float posY);

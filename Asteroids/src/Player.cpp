@@ -14,7 +14,7 @@ void Player::initVariables()
 void Player::initTexture()
 {
    // Load a texture from file.
-	this->texture.loadFromFile("C:/Users/user/source/repos/Asteroids/Asteroids/src/Textures/ship.png");
+	this->texture.loadFromFile("Textures/ship.png"); // C:/Users/user/source/repos/Asteroids/Asteroids/src/
 }
 
 void Player::initSprite(sf::RenderTarget& target)

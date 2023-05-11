@@ -53,7 +53,8 @@ void Game::initGUI()
 
 void Game::initWorld()
 {
-	this->worldBackgroundTex.loadFromFile("C:/Users/user/source/repos/Asteroids/Asteroids/src/Textures/background1.jpg");
+	// C:/Users/user/source/repos/Asteroids/Asteroids/src/
+	this->worldBackgroundTex.loadFromFile("Textures/background1.jpg");
 	this->worldBackground.setTexture(this->worldBackgroundTex);
 }
 

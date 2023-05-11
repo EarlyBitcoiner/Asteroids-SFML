@@ -13,19 +13,42 @@ void Enemy::initVariables()
 	this->points = this->pointCount;
 }
 
-void Enemy::initShape()
+void Enemy::initSprite()
 {
-	this->shape.setRadius(this->pointCount * 9);
-	this->shape.setPointCount(this->pointCount);
-	this->shape.setFillColor(sf::Color(rand() % 254 + 1, rand() % 254 + 1, 255));
+	// C:/Users/user/source/repos/Asteroids/Asteroids/src/
+	this->texture.loadFromFile("Textures/asteroid1.png");
+
+	this->sprite.setTexture(this->texture);
+
+	if(this->pointCount == 3)
+	{
+		this->sprite.setScale(0.1f, 0.1f);
+	}
+	else if(this->pointCount <=5)
+	{
+		this->sprite.setScale(0.15f, 0.15f);
+
+	}
+	else if (this->pointCount == 6)
+	{
+		this->sprite.setScale(0.2f, 0.2f);
+	}
+	else if(this->pointCount <=9)
+	{
+		this->sprite.setScale(0.25f,0.25f);
+	}
+	else
+	{
+		this->sprite.setScale(0.3f, 0.3f);
+	}
 }
 
 //Constructor
 Enemy::Enemy(float posX, float posY)
 {
 	this->initVariables();
-	this->initShape();
-	this->shape.setPosition(posX,posY);
+	this->initSprite();
+	this->sprite.setPosition(posX,posY);
 }
 
 //Modifiers
@@ -44,12 +67,12 @@ void Enemy::loseHp(int hp)
 //Accessors
 const sf::FloatRect Enemy::getBounds() const
 {
-	return this->shape.getGlobalBounds();
+	return this->sprite.getGlobalBounds();
 }
 
 const sf::Vector2f Enemy::getPos() const
 {
-	return this->shape.getPosition();
+	return this->sprite.getPosition();
 }
 
 const int& Enemy::getPoints() const
@@ -70,12 +93,12 @@ const int& Enemy::getHp() const
 //Functions
 void Enemy::update()
 {
-	this->shape.move(0.f, this->speed);
+	this->sprite.move(0.f, this->speed);
 }
 
 void Enemy::render(sf::RenderTarget& target)
 {
-	target.draw(this->shape);
+	target.draw(this->sprite);
 }
 
 //Destructor
