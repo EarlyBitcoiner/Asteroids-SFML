@@ -13,19 +13,19 @@ void Game::initWindow()
 void Game::initTextures()
 {
 	this->textures["BULLET"] = new sf::Texture();
-	this->textures["BULLET"]->loadFromFile("C:/Users/user/source/repos/Asteroids/Asteroids/src/Textures/bullet.png");
+	this->textures["BULLET"]->loadFromFile("Textures/bullet.png"); // C:/Users/user/source/repos/Asteroids/Asteroids/src/
 
 	this->textures["BOOM1"] = new sf::Texture();
-	this->textures["BOOM1"]->loadFromFile("C:/Users/user/source/repos/Asteroids/Asteroids/src/Textures/boom1.png");
+	this->textures["BOOM1"]->loadFromFile("Textures/boom1.png"); // C:/Users/user/source/repos/Asteroids/Asteroids/src/
 
 	this->textures["CRASH1"] = new sf::Texture();
-	this->textures["CRASH1"]->loadFromFile("C:/Users/user/source/repos/Asteroids/Asteroids/src/Textures/crash1.png");
+	this->textures["CRASH1"]->loadFromFile("Textures/crash1.png");
 }
 
 void Game::initGUI()
 {
 	//Load font
-	this->font.loadFromFile("C:/Users/user/source/repos/Asteroids/Asteroids/src/Fonts/BrunoAce-Regular.ttf");
+	this->font.loadFromFile("Fonts/BrunoAce-Regular.ttf");
 
 	//Init point text
 	//this->pointText.setPosition(700.f,25.f );
