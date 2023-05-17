@@ -2,11 +2,12 @@
 
 Gameplay photos:
 
-![game2](https://github.com/EarlyBitcoiner/Asteroids-SFML/assets/97707707/b9ebd7f7-1494-45a1-995c-f24113867fe5)
+![Екранна снимка (18)](https://github.com/EarlyBitcoiner/Asteroids-SFML/assets/97707707/3b1dc61a-e65b-4fa0-8dee-cf1e4b97366f)
 
-![game](https://github.com/EarlyBitcoiner/Asteroids-SFML/assets/97707707/872a781a-8a7d-4315-8efe-b0c546d148f5)
+![Екранна снимка (19)](https://github.com/EarlyBitcoiner/Asteroids-SFML/assets/97707707/3131e049-b0bc-4b9b-9497-9932a96b5358)
 
 To play the game simply:
+
  1. Download repository as a ZIP
  2. UnZip
  3. Start the Asteroids.exe file in Asteroids-SFML\Asteroids\bin\Win32\Release
