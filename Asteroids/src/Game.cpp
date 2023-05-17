@@ -13,10 +13,10 @@ void Game::initWindow()
 void Game::initTextures()
 {
 	this->textures["BULLET"] = new sf::Texture();
-	this->textures["BULLET"]->loadFromFile("Textures/bullet.png"); // C:/Users/user/source/repos/Asteroids/Asteroids/src/
+	this->textures["BULLET"]->loadFromFile("Textures/normalLaser.png");
 
 	this->textures["BOOM1"] = new sf::Texture();
-	this->textures["BOOM1"]->loadFromFile("Textures/boom1.png"); // C:/Users/user/source/repos/Asteroids/Asteroids/src/
+	this->textures["BOOM1"]->loadFromFile("Textures/boom1.png");
 
 	this->textures["CRASH1"] = new sf::Texture();
 	this->textures["CRASH1"]->loadFromFile("Textures/crash1.png");
@@ -65,7 +65,7 @@ void Game::initPlayer()
 
 void Game::initEnemies()
 {
-	this->spawnTimerMax = 80.f;
+	this->spawnTimerMax = 70.f;
 	this->spawnTimer = 0.f;
 }
 
@@ -127,7 +127,7 @@ void Game::updateInput()
 	{
 		this->bullets.push_back(new Bullet(this->textures["BULLET"], // texture
 			this->player->getPos().x + this->player->getBounds().width/2.f, // spawn position X
-			this->player->getPos().y - this->player->getBounds().height/2.f, // spawn position Y
+			this->player->getPos().y, // spawn position Y
 			0.f,   // travel direction X by
 			-1.f, // travel direction Y by
 			5.f, // travel speed

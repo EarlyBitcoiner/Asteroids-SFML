@@ -8,6 +8,7 @@
 #include "Enemy.h"
 #include "Bullet.h"
 #include "Explosion.h"
+#include "PowerUp.h"
 
 class Game {
 private:

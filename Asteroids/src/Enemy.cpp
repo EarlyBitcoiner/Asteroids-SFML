@@ -7,15 +7,14 @@ void Enemy::initVariables()
 	this->pointCount = rand() % 8 + 3; // min = 3 max = 10
 	this->speed = (this->pointCount > 6) ? (rand() % 3) / 2 : this->pointCount / 2;
 	this->type = 0;
-	this->hpMax = this->pointCount;
+	this->hpMax = this->pointCount * 1.5;
 	this->hp = this->hpMax;
 	this->damage = this->pointCount;
-	this->points = this->pointCount;
+	this->points = this->pointCount * 3;
 }
 
 void Enemy::initSprite()
 {
-	// C:/Users/user/source/repos/Asteroids/Asteroids/src/
 	this->texture.loadFromFile("Textures/asteroid1.png");
 
 	this->sprite.setTexture(this->texture);
