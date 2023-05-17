@@ -16,7 +16,7 @@ private:
 	sf::Sprite sprite;
 	sf::Texture texture;
 
-	float speed = 5.f;
+	float speed = 1.5f;
 	powerup type;
 
 	//Private Functions
@@ -30,6 +30,8 @@ public:
 	const sf::FloatRect getBounds() const;
 
 	const sf::Vector2f getPos() const;
+
+	const powerup getType() const;
 
 	//Functions
 	void update();

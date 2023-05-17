@@ -59,6 +59,22 @@ const int& Player::getHpMax() const
 	return this->hpMax;
 }
 
+const bool Player::powerActive() const
+{
+	if (this->activePowerups.find(powerup::power) != this->activePowerups.end())
+		return true;
+	else
+		return false;
+}
+
+const bool Player::shieldActive() const
+{
+	if (this->activePowerups.find(powerup::shield) != this->activePowerups.end())
+		return true;
+	else
+		return false;
+}
+
 //Modifiers
 void Player::setPos(const sf::Vector2f pos)
 {
@@ -94,15 +110,51 @@ const bool Player::canAttack()
 	return false;
 }
 
+void Player::absorbPowerup(PowerUp* power)
+{
+	switch (power->getType()) {
+	case powerup::power:
+		this->activePowerups[powerup::power] = 0.f;
+		break;
+	case powerup::health:
+		this->hp = hpMax;
+		break;
+	case powerup::shield:
+		this->activePowerups[powerup::shield] = 0.f;
+		break;
+    }
+}
+
+
 void Player::update()
 {
 	this->updateAttack();
+	this->updatePowerups();
 }
 
 void Player::updateAttack()
 {
 	if(this->attackCooldownMax > this->attackCooldown)
 	    this->attackCooldown += 0.5f;
+}
+
+void Player::updatePowerups()
+{
+	if (this->activePowerups.size() == 0)
+		return;
+
+	std::map<powerup, float>::iterator it = this->activePowerups.begin();
+
+	for (it; it != this->activePowerups.end();) {
+
+		if (it->second == 500.f) {
+			it = this->activePowerups.erase(it);
+		}
+		else {
+			it->second += 1.f;
+			++it;
+		}
+	}
 }
 
 void Player::render(sf::RenderTarget& target)

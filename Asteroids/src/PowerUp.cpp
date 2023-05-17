@@ -22,6 +22,7 @@ void PowerUp::initVariables()
 void PowerUp::initSprite()
 {
 	this->sprite.setTexture(this->texture);
+	this->sprite.setScale(sf::Vector2f(0.4f, 0.4f));
 }
 
 //Constructor
@@ -41,6 +42,11 @@ const sf::FloatRect PowerUp::getBounds() const
 const sf::Vector2f PowerUp::getPos() const
 {
 	return this->sprite.getPosition();
+}
+
+const powerup PowerUp::getType() const
+{
+	return this->type;
 }
 
 //Functions

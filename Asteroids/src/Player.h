@@ -4,6 +4,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <stdexcept>
+#include <map>
+
+#include "PowerUp.h"
 
 class Player 
 {
@@ -15,6 +18,8 @@ private:
 
 	float attackCooldown;
 	float attackCooldownMax;
+
+	std::map<powerup, float> activePowerups;
 
 	int hp;
 	int hpMax;
@@ -32,7 +37,12 @@ public:
 	const sf::FloatRect getBounds() const;
 
 	const int& getHp() const;
+
 	const int& getHpMax() const;
+
+	const bool powerActive() const;
+
+	const bool shieldActive() const;
 
 	//Modifiers
 	void setPos(const sf::Vector2f pos);
@@ -46,9 +56,13 @@ public:
 
 	const bool canAttack();
 
+	void absorbPowerup(PowerUp* power);
+
 	void update();
 
 	void updateAttack();
+
+	void updatePowerups();
 
 	void render(sf::RenderTarget& target);
 

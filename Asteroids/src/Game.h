@@ -28,9 +28,14 @@ private:
 	sf::Text gameOverText;
 
 	//Enemies
-	float spawnTimer;
-	float spawnTimerMax;
+	float spawnTimerEnemies;
+	float spawnTimerMaxEnemies;
 	std::vector<Enemy*> enemies;
+
+	//Power Ups
+	float spawnTimerPowerups;
+	float spawnTimerMaxPowerups;
+	std::vector<PowerUp*> powerups;
 
 	//Explosions
 	std::vector<Explosion*> explosions;
@@ -54,6 +59,7 @@ private:
 	void initWorld();
 	void initPlayer();
 	void initEnemies();
+	void initPowerups();
 public:
 	Game();
 
@@ -73,6 +79,8 @@ public:
 	void updateBullets();
 
 	void updateEnemies();
+
+	void updatePowerups();
 
 	void updateCombat();
 

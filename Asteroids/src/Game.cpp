@@ -12,8 +12,11 @@ void Game::initWindow()
 
 void Game::initTextures()
 {
-	this->textures["BULLET"] = new sf::Texture();
-	this->textures["BULLET"]->loadFromFile("Textures/normalLaser.png");
+	this->textures["LASER"] = new sf::Texture();
+	this->textures["LASER"]->loadFromFile("Textures/normalLaser.png");
+
+	this->textures["POWERFULLASER"] = new sf::Texture();
+	this->textures["POWERFULLASER"]->loadFromFile("Textures/powerfulLaser.png");
 
 	this->textures["BOOM1"] = new sf::Texture();
 	this->textures["BOOM1"]->loadFromFile("Textures/boom1.png");
@@ -65,8 +68,14 @@ void Game::initPlayer()
 
 void Game::initEnemies()
 {
-	this->spawnTimerMax = 70.f;
-	this->spawnTimer = 0.f;
+	this->spawnTimerMaxEnemies = 70.f;
+	this->spawnTimerEnemies = 0.f;
+}
+
+void Game::initPowerups()
+{
+	this->spawnTimerPowerups = 0.f;
+	this->spawnTimerMaxPowerups = 800.f;
 }
 
 //Constructors
@@ -76,6 +85,7 @@ Game::Game()
 	this->initTextures();
 	this->initPlayer();
 	this->initEnemies();
+	this->initPowerups();
 	this->initGUI();
 	this->initWorld();
 }
@@ -125,13 +135,15 @@ void Game::updateInput()
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->player->canAttack())
 	{
-		this->bullets.push_back(new Bullet(this->textures["BULLET"], // texture
+		this->bullets.push_back(new Bullet(
+			(this->player->powerActive()) ? this->textures["POWERFULLASER"] : this->textures["LASER"], // texture
 			this->player->getPos().x + this->player->getBounds().width/2.f, // spawn position X
 			this->player->getPos().y, // spawn position Y
 			0.f,   // travel direction X by
 			-1.f, // travel direction Y by
-			5.f, // travel speed
-			3.f)); // damage
+			6.f, // travel speed
+			(this->player->powerActive()) ? 6.f : 3.f) // damage
+		); 
 	}
 }
 
@@ -199,8 +211,8 @@ void Game::updateBullets()
 void Game::updateEnemies()
 {
 	//Spawning
-	this->spawnTimer += 0.5f;
-	if (this->spawnTimer >= this->spawnTimerMax)
+	this->spawnTimerEnemies += 0.5f;
+	if (this->spawnTimerEnemies >= this->spawnTimerMaxEnemies)
 	{
 		float spawnXpos = rand() % this->window->getSize().x;
 
@@ -208,7 +220,7 @@ void Game::updateEnemies()
 			spawnXpos -= 300.f;
 
 		this->enemies.push_back(new Enemy(spawnXpos, -200.f));
-		this->spawnTimer = 0.f;
+		this->spawnTimerEnemies = 0.f;
 	}
   
 	//Update
@@ -231,9 +243,10 @@ void Game::updateEnemies()
 		//check if enemy colliding with the player
 		else if (enemy->getBounds().intersects(this->player->getBounds()))
 		{
-			this->explosions.push_back(new Explosion(*this->textures["CRASH1"], enemy->getPos()));
-
-			this->player->loseHp(this->enemies.at(counter)->getDamage());
+			if (!this->player->shieldActive()) {
+				this->explosions.push_back(new Explosion(*this->textures["CRASH1"], enemy->getPos()));
+				this->player->loseHp(this->enemies.at(counter)->getDamage());
+			}
 
 			delete this->enemies.at(counter);
 			this->enemies.erase(this->enemies.begin() + counter);
@@ -243,6 +256,52 @@ void Game::updateEnemies()
 
 		++counter;
 	}
+}
+
+void Game::updatePowerups()
+{
+	//Spawning
+	this->spawnTimerPowerups += 0.5f;
+	if (this->spawnTimerPowerups >= this->spawnTimerMaxPowerups)
+	{
+		float spawnXpos = rand() % this->window->getSize().x;
+
+		if (spawnXpos >= this->window->getSize().x - 100.f)
+			spawnXpos -= 300.f;
+
+		this->powerups.push_back(new PowerUp(spawnXpos, -200.f));
+		this->spawnTimerPowerups = 0.f;
+	}
+
+	//Update
+	unsigned counter = 0;
+	for (auto* powerup : this->powerups)
+	{
+		powerup->update();
+
+		//Check if power up colliding with the bottom of screen
+		if (powerup->getBounds().top > this->window->getSize().y)
+		{
+
+			//Delete power up
+			delete this->powerups.at(counter);
+			this->powerups.erase(this->powerups.begin() + counter);
+			--counter;
+		}
+		//check if power up colliding with the player
+		else if (powerup->getBounds().intersects(this->player->getBounds()))
+		{
+			this->player->absorbPowerup(powerup);
+
+			delete this->powerups.at(counter);
+			this->powerups.erase(this->powerups.begin() + counter);
+
+			--counter;
+		}
+
+		++counter;
+	}
+
 }
 
 void Game::updateCombat()
@@ -301,6 +360,7 @@ void Game::update()
 	this->player->update();
 	this->updateCollision();
 	this->updateEnemies();
+	this->updatePowerups();
 	this->updateCombat();
 	this->updateExplosions();
 	this->updateGUI();
@@ -341,6 +401,11 @@ void Game::render()
 	for (auto* enemy : this->enemies)
 	{
 		enemy->render(*this->window);
+	}
+
+	for (auto* powerup : this->powerups)
+	{
+		powerup->render(*this->window);
 	}
 
 	this->renderGUI();
