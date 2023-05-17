@@ -147,11 +147,11 @@ void Player::updatePowerups()
 
 	for (it; it != this->activePowerups.end();) {
 
-		if (it->second == 500.f) {
+		if (it->second >= 1000.f) {
 			it = this->activePowerups.erase(it);
 		}
 		else {
-			it->second += 1.f;
+			it->second += 0.5f;
 			++it;
 		}
 	}

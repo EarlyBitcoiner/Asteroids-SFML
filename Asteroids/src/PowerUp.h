@@ -6,8 +6,8 @@
 #include <stdexcept>
 
 enum powerup{ health = 0,
-	power,
-	shield
+	power = 1,
+	shield = 2
 };
 
 class PowerUp {
