@@ -13,21 +13,27 @@ void Player::initVariables()
 
 void Player::initTexture()
 {
-   // Load a texture from file.
-	this->texture.loadFromFile("Textures/ship.png"); // C:/Users/user/source/repos/Asteroids/Asteroids/src/
+   // Load a sshipTex from file.
+	this->sshipTex.loadFromFile("Textures/ship.png"); // C:/Users/user/source/repos/Asteroids/Asteroids/src/
+	this->shieldTex.loadFromFile("Textures/shieldTex.png");
 }
 
 void Player::initSprite(sf::RenderTarget& target)
 {
-  // Set texture to a sprite.
-	this->sprite.setTexture(this->texture);
+  // Set textures to a sprites.
+	this->sship.setTexture(this->sshipTex);
+	this->shield.setTexture(this->shieldTex);
 
-  // Resize the sprite.
-	this->sprite.scale(0.1f,0.1f);
+  // Resize the sprites.
+	this->sship.scale(0.1f,0.1f);
+	this->shield.scale(0.25f,0.25f);
 
-	// Set starting position(spawn)
-	this->sprite.setPosition(target.getSize().x / 2.f - this->sprite.getGlobalBounds().width / 2,
-		target.getSize().y / 2.f - this->sprite.getGlobalBounds().height / 2);
+	// Set starting position(spawn) of sprites
+	this->sship.setPosition(target.getSize().x / 2.f - this->sship.getGlobalBounds().width / 2,
+		target.getSize().y / 2.f - this->sship.getGlobalBounds().height / 2);
+
+	this->shield.setPosition(target.getSize().x / 2.f - this->sship.getGlobalBounds().width / 2,
+		target.getSize().y / 2.f - this->sship.getGlobalBounds().height / 2);
 }
 
 //Constructor
@@ -41,12 +47,12 @@ Player::Player(sf::RenderTarget& target)
 //Accessors
 const sf::Vector2f& Player::getPos() const
 {
-	return this->sprite.getPosition();
+	return this->sship.getPosition();
 }
 
 const sf::FloatRect Player::getBounds() const
 {
-	return this->sprite.getGlobalBounds();
+	return this->sship.getGlobalBounds();
 }
 
 const int& Player::getHp() const
@@ -78,7 +84,7 @@ const bool Player::shieldActive() const
 //Modifiers
 void Player::setPos(const sf::Vector2f pos)
 {
-	this->sprite.setPosition(pos.x,pos.y);
+	this->sship.setPosition(pos.x,pos.y);
 }
 
 void Player::setHp(const int hp)
@@ -96,7 +102,7 @@ void Player::loseHp(const int hp)
 //Functions
 void Player::move(const float dirX, const float dirY)
 {
-	this->sprite.move(this->movementSpeed * dirX, this->movementSpeed * dirY);
+	this->sship.move(this->movementSpeed * dirX, this->movementSpeed * dirY);
 }
 
 const bool Player::canAttack()
@@ -130,6 +136,8 @@ void Player::update()
 {
 	this->updateAttack();
 	this->updatePowerups();
+	this->updateShieldPos();
+
 }
 
 void Player::updateAttack()
@@ -147,7 +155,7 @@ void Player::updatePowerups()
 
 	for (it; it != this->activePowerups.end();) {
 
-		if (it->second >= 1000.f) {
+		if (it->second >= 500.f) {
 			it = this->activePowerups.erase(it);
 		}
 		else {
@@ -157,9 +165,19 @@ void Player::updatePowerups()
 	}
 }
 
+void Player::updateShieldPos()
+{
+	this->shield.setPosition(sf::Vector2f(this->getPos().x - 27.f,
+		this->getPos().y - 15.f));
+}
+
 void Player::render(sf::RenderTarget& target)
 {
-	target.draw(this->sprite);
+	target.draw(this->sship);
+
+	if (this->shieldActive()) {
+		target.draw(this->shield);
+	}
 }
 
 //Destructor

@@ -11,8 +11,10 @@
 class Player 
 {
 private:
-	sf::Sprite sprite;
-	sf::Texture texture;
+	sf::Sprite sship;
+	sf::Sprite shield;
+	sf::Texture sshipTex;
+	sf::Texture shieldTex;
 
 	float movementSpeed;
 
@@ -63,6 +65,8 @@ public:
 	void updateAttack();
 
 	void updatePowerups();
+
+	void updateShieldPos();
 
 	void render(sf::RenderTarget& target);
 

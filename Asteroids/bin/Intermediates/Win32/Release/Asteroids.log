@@ -1,5 +1,4 @@
-﻿  Bullet.cpp
-  Enemy.cpp
+﻿  Enemy.cpp
 C:\Users\user\source\repos\Asteroids\Asteroids\src\Enemy.cpp(8,34): warning C4244: '=': conversion from 'unsigned int' to 'float', possible loss of data
 C:\Users\user\source\repos\Asteroids\Asteroids\src\Enemy.cpp(10,33): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
   Explosion.cpp
@@ -19,13 +18,13 @@ C:\Users\user\source\repos\Asteroids\Asteroids\src\Game.cpp(310,20): warning C40
 C:\Users\user\source\repos\Asteroids\Asteroids\src\Game.cpp(314,21): warning C4018: '<': signed/unsigned mismatch
 C:\Users\user\source\repos\Asteroids\Asteroids\src\Game.cpp(318,57): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 C:\Users\user\source\repos\Asteroids\Asteroids\src\Game.cpp(342,18): warning C4018: '<': signed/unsigned mismatch
-  main.cpp
-C:\Users\user\source\repos\Asteroids\Asteroids\src\main.cpp(1,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
   Player.cpp
   PowerUp.cpp
+  main.cpp
+C:\Users\user\source\repos\Asteroids\Asteroids\src\main.cpp(1,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/LTCG' specification
   Generating code
-  Previous IPDB not found, fall back to full compilation.
+  Previous IPDB and IOBJ mismatch, fall back to full compilation.
   All 767 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   Asteroids.vcxproj -> C:\Users\user\source\repos\Asteroids\Asteroids\bin\Win32\Release\Asteroids.exe
